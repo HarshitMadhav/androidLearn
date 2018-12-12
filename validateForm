@@ -1,0 +1,86 @@
+@Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_up:
+                if (Configuration.isInternetConnection(getApplicationContext())) {
+                    if (validate()) {
+
+
+
+if (aSwitch.isChecked()){
+
+    String jsonData = toJSon(username.getText().toString(), fullName.getText().toString(), emailEdit.getText().toString(), mobileNumber.getText().toString(), passwordEdit.getText().toString(), deviceID, deviceToken, "android",otpgenerated,countryName);
+    System.out.println("jsonData====>" + jsonData);
+    //here call webservice signup
+    if (deviceToken != null) {
+        new SendingData().execute(jsonData);
+    } else {
+        Toast.makeText(getApplicationContext(), "Please Refresh App! We Could Not Recognize Your Device due to Internet Connection", Toast.LENGTH_LONG).show();
+    }
+}
+
+
+else {
+    Toast.makeText(getApplicationContext(), "Please! Agree to the terms and conditions", Toast.LENGTH_LONG).show();
+
+            }
+                        //here we call toTson methed for convert java object to json object
+                    }
+
+                } else {
+                    Toast.makeText(getApplicationContext(), Constant.NO_INTERNET_MSG, Toast.LENGTH_LONG).show();
+                }
+                break;
+
+            case R.id.signin:
+                startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                finish();
+                break;
+        }
+
+    }
+
+    public boolean validate() {
+        boolean valid = true;
+
+        String uname = username.getText().toString();
+        String fullName1 = fullName.getText().toString();
+        String passwordEdit1 = passwordEdit.getText().toString();
+        String mobileNumber1 = mobileNumber.getText().toString();
+        String email1 = emailEdit.getText().toString();
+
+
+        if(uname.trim().isEmpty()){
+            username.setError("Username is required");
+            valid =false;
+        }else{
+            username.setError(null);
+        }
+        if (fullName1.trim().isEmpty()) {
+            fullName.setError("Name is required");
+            valid = false;
+        } else {
+            fullName.setError(null);
+        }
+        if (passwordEdit1.trim().isEmpty()) {
+            passwordEdit.setError("Enter Valid Password");
+            valid = false;
+        } else {
+            passwordEdit.setError(null);
+        }
+
+        if (mobileNumber1.trim().length() != 10) {
+            mobileNumber.setError("Enter a valid mobile number");
+            valid = false;
+        } else {
+            mobileNumber.setError(null);
+        }
+
+        if (!isValidEmail(email1)) {
+            emailEdit.setError("Enter valid Email");
+            valid = false;
+        } else {
+            emailEdit.setError(null);
+        }
+        return valid;
+    }
